@@ -73,6 +73,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
+        'gunicorn',
         'aiohttp',
         'aiohttp_jinja2',
         'aiodns',
