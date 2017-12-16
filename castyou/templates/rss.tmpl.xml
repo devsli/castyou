@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ config['title'] }}</title>
+    <link>{{ config['url'] }}</link>
+    <language>{{ config['language'] }}</language>
+    <copyright>{{ config['copyright'] }}</copyright>
+    <atom:link href="{{ config['link'] }}" rel="self" type="application/rss+xml" />
+    <itunes:subtitle>{{ config['subtitle'] }}</itunes:subtitle>
+    <itunes:author>{{ config['author'] }}</itunes:author>
+    <itunes:summary>{{ config['summary'] }}</itunes:summary>
+    <description>{{ config['description'] }}</description>
+    <itunes:owner>
+      <itunes:name>{{ config['owner_name'] }}</itunes:name>
+      <itunes:email>{{ config['owner_email'] }}</itunes:email>
+    </itunes:owner>
+    <itunes:image href="{{ config['image'] }}" />
+    <itunes:category text="{{ config['category'] }}" />
+    <itunes:explicit>{{ config['explicit'] and "explicit" or "clean" }}</itunes:explicit>
+
+    {% for item in items %}
+    <item>
+      <title>{{ item['title'] }}</title>
+      <itunes:author>{{ item['author'] }}</itunes:author>
+      <itunes:subtitle>{{ item['subtitle'] }}</itunes:subtitle>
+      <itunes:summary>{{ item['summary'] }}</itunes:summary>
+      <itunes:image href="{{ item['image'] }}" />
+      <enclosure url="{{ item['url'] }}" length="{{ item['length'] }}" type="{{ item['type'] }}" />
+      <guid>{{ item['guid'] }}</guid>
+      <pubDate>{{ item['pub_date'] }}</pubDate>
+      <description>{{ item['description'] }}</description>
+      <itunes:duration>{{ item['duration'] }}</itunes:duration>
+      <itunes:explicit>{{ item['explicit'] and "explicit" or "clean" }}</itunes:explicit>
+    </item>
+    {% endfor %}
+
+  </channel>
+</rss>
