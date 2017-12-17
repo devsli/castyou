@@ -1,8 +1,13 @@
 import aiohttp_jinja2
 import jinja2
+import pathlib
+
 from aiohttp import web
 
 from . import views
+from . import paths
+
+pathlib.Path(paths.UPLOADS).mkdir(parents=True, exist_ok=True)
 
 app = web.Application()
 
