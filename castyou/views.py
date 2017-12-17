@@ -31,6 +31,7 @@ async def upload(request):
 
     return web.Response(text=f'{mp3.filename} uploaded')
 
+
 @aiohttp_jinja2.template('rss.tmpl.xml')
 async def rss(_):
     return {

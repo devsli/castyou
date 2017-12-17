@@ -9,6 +9,7 @@ from . import paths
 
 pathlib.Path(paths.UPLOADS).mkdir(parents=True, exist_ok=True)
 
+
 app = web.Application()
 
 app.router.add_get('/', views.index)

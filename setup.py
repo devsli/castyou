@@ -78,6 +78,8 @@ setup(
         'aiohttp_jinja2',
         'aiodns',
         'jinja2',
+        'mutagen',
+        'asyncpg',
     ],
 
     dependency_links=[],
@@ -87,7 +89,7 @@ setup(
     # for example:
     # $ pip install -e '.[dev,test]'
     extras_require={
-        'dev': [],
+        'dev': ['psycopg2', 'alembic'],
         'test': [],
     },
 )
