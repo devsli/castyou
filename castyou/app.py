@@ -5,9 +5,9 @@ import pathlib
 from aiohttp import web
 
 from . import views
-from . import paths
+from . import const
 
-pathlib.Path(paths.UPLOADS).mkdir(parents=True, exist_ok=True)
+pathlib.Path(const.UPLOADS).mkdir(parents=True, exist_ok=True)
 
 
 app = web.Application()

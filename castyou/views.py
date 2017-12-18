@@ -1,8 +1,9 @@
 import os
+import datetime
 import aiohttp_jinja2
 from aiohttp import web
 
-from . import paths
+from . import const, utils
 
 
 async def demo(request):
@@ -18,18 +19,16 @@ async def index(_):
 
 async def upload(request):
     reader = await request.multipart()
-    mp3 = await reader.next()
+    item = await reader.next()
 
-    size = 0
-    with open(os.path.join(paths.UPLOADS, mp3.filename), 'wb') as f:
-        while True:
-            chunk = await mp3.read_chunk()  # 8192 bytes by default.
-            if not chunk:
-                break
-            size += len(chunk)
-            f.write(chunk)
+    filename = datetime.datetime.now().strftime('%y%m%d_%H%M%S')
+    ext = os.path.splitext(item.filename)
+    fullname = filename + ext[1]
 
-    return web.Response(text=f'{mp3.filename} uploaded')
+    await utils.upload(item, fullname, const.UPLOADS)
+    await utils.new_entry(item, fullname, const.UPLOADS)
+
+    return web.Response(text=f'{item.filename} uploaded')
 
 
 @aiohttp_jinja2.template('rss.tmpl.xml')
