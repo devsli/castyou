@@ -2,6 +2,7 @@ import os
 import asyncpg
 import mutagen
 from datetime import datetime, timedelta
+from email.utils import format_datetime
 
 
 def get_db():
@@ -14,7 +15,7 @@ async def new_entry(file, uploaded_name, location):
     fullpath = os.path.join(location, uploaded_name)
     audio = mutagen.File(fullpath)
 
-    duration = str(timedelta(seconds=audio.info.length))
+    duration = str(timedelta(seconds=round(audio.info.length)))
     length = os.path.getsize(fullpath)
 
     await conn.execute('''
@@ -53,6 +54,8 @@ def decorate_item(item):
     result = dict(item)
     host = os.environ.get('VIRTUAL_HOST', 'localhost')
     result['url'] = f"http://{host}/file/{item['filename']}"
+    result['pub_date'] = format_datetime(result['pub_date'])
+    result['guid'] = result['url']
     return result
 
 
