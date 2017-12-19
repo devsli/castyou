@@ -61,6 +61,6 @@ def decorate_item(item):
 
 async def items():
     con = await get_db()
-    result = await con.fetch('SELECT * FROM items')
+    result = await con.fetch('SELECT * FROM items ORDER BY pub_date DESC')
     con.close()
     return [decorate_item(item) for item in result]
