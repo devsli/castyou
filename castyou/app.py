@@ -14,7 +14,7 @@ app = web.Application()
 
 app.router.add_get('/', views.index)
 app.router.add_get('/rss.xml', views.rss)
-app.router.add_get('/{name}', views.demo)
 app.router.add_post('/upload', views.upload)
+app.router.add_static('/file/', path=str(const.UPLOADS), name='static')
 
 aiohttp_jinja2.setup(app, loader=jinja2.PackageLoader('castyou', 'templates'))

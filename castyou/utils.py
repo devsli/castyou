@@ -4,9 +4,12 @@ import mutagen
 from datetime import datetime, timedelta
 
 
+def get_db():
+    return asyncpg.connect('postgresql://castyou:castyou@database/castyou')
+
+
 async def new_entry(file, uploaded_name, location):
-    conn = await asyncpg.connect(
-        'postgresql://castyou:castyou@database/castyou')
+    conn = await get_db()
 
     fullpath = os.path.join(location, uploaded_name)
     audio = mutagen.File(fullpath)
@@ -19,6 +22,8 @@ async def new_entry(file, uploaded_name, location):
         VALUES ($1, $2, $3, $4, $5)
     ''', file.filename, datetime.now(), duration, uploaded_name, length)
 
+    await conn.close()
+
 
 async def upload(file, filename, location):
     size = 0
@@ -29,3 +34,30 @@ async def upload(file, filename, location):
                 break
             size += len(chunk)
             f.write(chunk)
+
+
+async def config():
+    result = {}
+
+    con = await get_db()
+    rows = await con.fetch('SELECT key, value FROM config')
+
+    for row in rows:
+        result[row['key']] = row['value']
+
+    con.close()
+    return result
+
+
+def decorate_item(item):
+    result = dict(item)
+    host = os.environ.get('VIRTUAL_HOST', 'localhost')
+    result['url'] = f"http://{host}/file/{item['filename']}"
+    return result
+
+
+async def items():
+    con = await get_db()
+    result = await con.fetch('SELECT * FROM items')
+    con.close()
+    return [decorate_item(item) for item in result]
