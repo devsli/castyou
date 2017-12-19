@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 async def new_entry(file, uploaded_name, location):
     conn = await asyncpg.connect(
-        'postgresql://castyou:castyou@localhost/castyou')
+        'postgresql://castyou:castyou@database/castyou')
 
     fullpath = os.path.join(location, uploaded_name)
     audio = mutagen.File(fullpath)

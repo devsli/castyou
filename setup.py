@@ -74,12 +74,12 @@ setup(
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
         'gunicorn',
-        'aiohttp',
         'aiohttp_jinja2',
         'aiodns',
         'jinja2',
         'mutagen',
         'asyncpg',
+        'aiohttp>=2.3',
     ],
 
     dependency_links=[],

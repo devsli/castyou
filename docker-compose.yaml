@@ -1,15 +1,31 @@
 version: "2.1"
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - "uploads:/root/.castyou"
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_PASS: ${DATABASE_PASS}
+      DATABASE_HOST: "database"
+    ports:
+      - 80
+    restart: always
+    depends_on:
+      - database
+
   database:
     image: postgres
     environment:
-      POSTGRES_USER: castyou
-      POSTGRES_DB: castyou
-      POSTGRES_PASSWORD: castyou
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASS}
     restart: always
-    ports:
-      - "5432:5432"
     logging:
       options:
         max-size: "10m"
@@ -20,3 +36,4 @@ services:
 
 volumes:
   database:
+  uploads:
