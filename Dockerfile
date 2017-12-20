@@ -4,7 +4,8 @@ FROM alpine
 WORKDIR /app
 EXPOSE 80
 
-RUN apk -U add py3-virtualenv gcc python3-dev musl-dev postgresql postgresql-dev
+RUN apk -U add py3-virtualenv gcc python3-dev musl-dev postgresql \
+               postgresql-dev libmagic
 
 COPY . /app
 

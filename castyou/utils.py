@@ -1,8 +1,10 @@
 import os
 import asyncpg
 import mutagen
+
 from datetime import datetime, timedelta
 from email.utils import format_datetime
+from magic import Magic
 
 
 def get_db():
@@ -12,16 +14,18 @@ def get_db():
 async def new_entry(file, uploaded_name, location):
     conn = await get_db()
 
-    fullpath = os.path.join(location, uploaded_name)
-    audio = mutagen.File(fullpath)
+    full_path = os.path.join(location, uploaded_name)
+    audio = mutagen.File(full_path)
 
     duration = str(timedelta(seconds=round(audio.info.length)))
-    length = os.path.getsize(fullpath)
+    length = os.path.getsize(full_path)
+    mime_type = Magic(mime=True).from_file(full_path)
 
     await conn.execute('''
-        INSERT INTO items (title, pub_date, duration, filename, length)
-        VALUES ($1, $2, $3, $4, $5)
-    ''', file.filename, datetime.now(), duration, uploaded_name, length)
+        INSERT INTO items (title, pub_date, duration, filename, length, type)
+        VALUES ($1, $2, $3, $4, $5, $6)''',
+                       file.filename, datetime.now(), duration, uploaded_name,
+                       length, mime_type)
 
     await conn.close()
 
