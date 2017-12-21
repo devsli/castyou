@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import {
 	BrowserRouter as Router,
 	Route,
 	Link
 } from 'react-router-dom'
 
-import { createObject, moveObject } from '../actions'
 import { DrawingPad } from '../components'
-
 
 const Home = () => (
 	<div>
@@ -57,52 +54,18 @@ const Topics = ({ match }) => (
 );
 
 class App extends Component {
-	onDragEnd(e) {
-		this.props.onDragEnd(this.props.activeBoard, e);
-	}
-
 	render() {
-		let { boards, activeBoard, onOpen } = this.props;
 		return (
 			<Router>
 				<div>
 					<Route exact path="/" component={Home}/>
 					<Route path="/about" component={About}/>
 					<Route path="/topics" component={Topics}/>
-					<Route path="/invar" component={() => (
-						<DrawingPad
-							onDragEnd={ this.onDragEnd.bind(this) }
-							boards={ boards }
-							activeBoard={ activeBoard }
-							onOpen={ onOpen }
-						/>
-					)}/>
+					<Route path="/invar" component={DrawingPad}/>
 				</div>
 			</Router>
 		)
 	}
 }
 
-const mapStateToProps = (state) => ({
-	activeBoard: state.activeBoard,
-	boards: state.boards
-});
-
-const mapDispatchToProps = (dispatch) => ({
-	onDragEnd: (boardId, data) => {
-		switch (data.dropType) {
-			case 'create':
-				dispatch(createObject(boardId, data));
-				break;
-
-			case 'move':
-				dispatch(moveObject(data));
-				break;
-
-			default:
-				console.log(data);
-		}
-	}
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default App;
