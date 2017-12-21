@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Columns, Column } from 'bulma-react';
 import { connect } from 'react-redux';
 
-import { BoardTabs, Canvas, Controls } from '.';
+import { BoardTabs, Canvas, Controls } from '../components';
 import {createObject, moveObject} from "../actions";
 
 

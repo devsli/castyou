@@ -5,7 +5,7 @@ import {
 	Link
 } from 'react-router-dom'
 
-import { DrawingPad } from '../components'
+import DrawingPad from './DrawingPad';
 
 const Home = () => (
 	<div>
