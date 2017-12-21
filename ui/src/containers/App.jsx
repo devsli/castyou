@@ -1,9 +1,60 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Columns, Column } from 'bulma-react'
+import {
+	BrowserRouter as Router,
+	Route,
+	Link
+} from 'react-router-dom'
 
 import { createObject, moveObject } from '../actions'
-import { BoardTabs, Canvas, Controls } from '../components'
+import { DrawingPad } from '../components'
+
+
+const Home = () => (
+	<div>
+		<h2>Home</h2>
+	</div>
+);
+
+const About = () => (
+	<div>
+		<h2>About</h2>
+	</div>
+);
+
+const Topic = ({ match }) => (
+	<div>
+		<h3>{match.params.topicId}</h3>
+	</div>
+);
+
+const Topics = ({ match }) => (
+	<div>
+		<h2>Topics</h2>
+		<ul>
+			<li>
+				<Link to={`${match.url}/rendering`}>
+					Rendering with React
+				</Link>
+			</li>
+			<li>
+				<Link to={`${match.url}/components`}>
+					Components
+				</Link>
+			</li>
+			<li>
+				<Link to={`${match.url}/props-v-state`}>
+					Props v. State
+				</Link>
+			</li>
+		</ul>
+
+		<Route path={`${match.url}/:topicId`} component={Topic}/>
+		<Route exact path={match.url} render={() => (
+			<h3>Please select a topic.</h3>
+		)}/>
+	</div>
+);
 
 class App extends Component {
 	onDragEnd(e) {
@@ -12,32 +63,22 @@ class App extends Component {
 
 	render() {
 		let { boards, activeBoard, onOpen } = this.props;
-		let board = boards.filter(({ id }) => id === activeBoard).pop();
-
 		return (
-			<div className='hero is-fullheight'>
-				<div className='hero-head'>
-					<BoardTabs
-						boards={ boards }
-						active={ activeBoard }
-						onOpen={ onOpen }
-					/>
+			<Router>
+				<div>
+					<Route exact path="/" component={Home}/>
+					<Route path="/about" component={About}/>
+					<Route path="/topics" component={Topics}/>
+					<Route path="/invar" component={() => (
+						<DrawingPad
+							onDragEnd={ this.onDragEnd.bind(this) }
+							boards={ boards }
+							activeBoard={ activeBoard }
+							onOpen={ onOpen }
+						/>
+					)}/>
 				</div>
-
-				<div className='hero-body' style={{position: 'relative'}}>
-					<Columns is-overlay>
-						<Column is-narrow style={{ width: '3rem' }}>
-							<Controls />
-						</Column>
-						<Column style={{position: 'relative'}}>
-							<Canvas
-								objects={ board.objects }
-								onDragEnd={ this.onDragEnd.bind(this) }
-							/>
-						</Column>
-					</Columns>
-				</div>
-			</div>
+			</Router>
 		)
 	}
 }
