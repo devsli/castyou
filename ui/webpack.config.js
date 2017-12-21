@@ -16,7 +16,7 @@ const config = {
 	module: {
 		rules: [
 			{
-				test: /\.js$/,
+				test: /\.jsx?$/,
 				exclude: /node_modules/,
 
 				use: {
@@ -36,7 +36,11 @@ const config = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NamedModulesPlugin(),
 		new HtmlWebpackPlugin({template: './src/index.html'})
-	]
+	],
+
+	resolve: {
+		extensions: ['.js', '.jsx']
+	},
 };
 
 module.exports = config;
