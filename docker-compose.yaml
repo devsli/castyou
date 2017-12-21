@@ -1,7 +1,22 @@
 version: "2.1"
 
 services:
-  app:
+  ui:
+    image: node:8-alpine
+    working_dir: /app
+    command: "/app/dev-server.sh"
+    volumes:
+      - "./ui:/app"
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      API_PORT: ${API_URL}
+    ports:
+      - "8888:3000"
+    restart: always
+    depends_on:
+      - backend
+
+  backend:
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,7 +30,7 @@ services:
       DATABASE_PASS: ${DATABASE_PASS}
       DATABASE_HOST: "database"
     ports:
-      - "80:80"
+      - "8765:80"
     restart: always
     depends_on:
       - database
