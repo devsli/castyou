@@ -55,7 +55,7 @@ const Topics = ({ match }) => (
 
 class App extends Component {
 	render() {
-		return (
+		const router = (
 			<Router>
 				<div>
 					<Route exact path="/" component={Home}/>
@@ -64,6 +64,29 @@ class App extends Component {
 					<Route path="/invar" component={DrawingPad}/>
 				</div>
 			</Router>
+		);
+
+		return (
+			<div>
+				<section className="hero is-primary">
+					<div className="hero-body">
+						<div className="container">
+							<h1 className="title">
+								Cast you!
+							</h1>
+							<p className="subtitle">
+								Podcast server for lazy people
+							</p>
+						</div>
+					</div>
+				</section>
+
+				<section className="section">
+					<div className="container">
+						{ router }
+					</div>
+				</section>
+			</div>
 		)
 	}
 }
