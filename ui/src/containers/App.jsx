@@ -5,19 +5,8 @@ import {
 	Link
 } from 'react-router-dom'
 
+import Home from './Home';
 import DrawingPad from './DrawingPad';
-
-const Home = () => (
-	<div>
-		<h2>Home</h2>
-	</div>
-);
-
-const About = () => (
-	<div>
-		<h2>About</h2>
-	</div>
-);
 
 const Topic = ({ match }) => (
 	<div>
@@ -59,7 +48,6 @@ class App extends Component {
 			<Router>
 				<div>
 					<Route exact path="/" component={Home}/>
-					<Route path="/about" component={About}/>
 					<Route path="/topics" component={Topics}/>
 					<Route path="/invar" component={DrawingPad}/>
 				</div>
