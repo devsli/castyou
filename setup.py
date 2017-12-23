@@ -81,6 +81,8 @@ setup(
         'mutagen',
         'asyncpg',
         'aiohttp>=2.3',
+        'aiohttp_cors',
+        'shortuuid',
     ],
 
     dependency_links=[],

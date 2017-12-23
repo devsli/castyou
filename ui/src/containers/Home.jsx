@@ -8,9 +8,21 @@ export default class Home extends React.Component {
 		files: [],
 	};
 
-	onDrop(acceptedFiles) {
+	upload = () => {
+		const config = {
+			headers: { 'content-type': 'multipart/form-data' }
+		};
+
+		this.state.files.forEach((file) => {
+			const data = new FormData();
+			data.append('cast', file, file.name);
+			axios.post('http://localhost:8765/upload', data, config)
+		});
+	};
+
+	onDrop = (acceptedFiles) => {
 		this.setState({ files: [ ...this.state.files, ...acceptedFiles ] });
-	}
+	};
 
 	render() {
 		return (
@@ -18,14 +30,22 @@ export default class Home extends React.Component {
 				Drop files here to upload
 
 				<Dropzone
-					onDrop={ this.onDrop.bind(this) }
+					onDrop={ this.onDrop }
 				/>
 
 				<ol>
 					{ this.state.files.map((i, idx) => <li key={idx}>{ i.name }</li>) }
 				</ol>
 
-				<form action="http://localhost:8765/upload" method="post" encType="multipart/form-data">
+				<a className="button" onClick={ this.upload }>
+					<span className="file-icon">
+						<i className="fa fa-upload" />
+					</span>
+
+					Upload
+				</a>
+
+				<form style={{display: 'none'}} action="http://localhost:8765/upload" method="post" encType="multipart/form-data">
 					<div className="field">
 						<div className="file is-primary">
 							<label className="file-label">
@@ -43,7 +63,6 @@ export default class Home extends React.Component {
 					</div>
 					<input type="submit" />
 				</form>
-
 			</div>
 		);
 	}
