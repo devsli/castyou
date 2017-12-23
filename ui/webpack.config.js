@@ -5,14 +5,17 @@ const path = require('path');
 const config = {
 	entry: [
 		'react-hot-loader/patch',
+		'babel-polyfill',
 		'webpack/hot/only-dev-server',
 		'webpack-dev-server/client?http://localhost:8888',
 		'./src/index'
 	],
+
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'my-first-webpack.bundle.js'
+		filename: 'bundle.[hash].js'
 	},
+
 	module: {
 		rules: [
 			{
@@ -22,7 +25,7 @@ const config = {
 				use: {
 					loader: 'babel-loader',
 					query: {
-						presets: ['es2015', 'react']
+						presets: [ 'env', 'react', 'stage-2' ]
 					}
 				}
 			},
@@ -32,6 +35,7 @@ const config = {
 			}
 		]
 	},
+
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NamedModulesPlugin(),

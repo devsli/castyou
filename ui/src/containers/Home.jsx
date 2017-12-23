@@ -4,12 +4,12 @@ import axios from 'axios';
 import Dropzone from 'react-dropzone';
 
 export default class Home extends React.Component {
-	state: {
+	state = {
 		files: [],
 	};
 
 	onDrop(acceptedFiles) {
-		this.setState([ ...this.state.files, acceptedFiles ]);
+		this.setState({ files: [ ...this.state.files, ...acceptedFiles ] });
 	}
 
 	render() {
@@ -21,11 +21,9 @@ export default class Home extends React.Component {
 					onDrop={ this.onDrop.bind(this) }
 				/>
 
-				{/*
 				<ol>
 					{ this.state.files.map((i, idx) => <li key={idx}>{ i.name }</li>) }
 				</ol>
-				*/}
 
 				<form action="http://localhost:8765/upload" method="post" encType="multipart/form-data">
 					<div className="field">
