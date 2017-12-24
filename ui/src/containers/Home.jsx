@@ -13,10 +13,15 @@ export default class Home extends React.Component {
 			headers: { 'content-type': 'multipart/form-data' }
 		};
 
-		this.state.files.forEach((file) => {
+		const tasks = this.state.files.map((file) => {
 			const data = new FormData();
 			data.append('cast', file, file.name);
-			axios.post('http://localhost:8765/upload', data, config)
+			console.log(process.env.API_URL);
+			return axios.post(`${process.env.API_URL}/upload`, data, config);
+		});
+
+		Promise.all(tasks).then(() => {
+			this.setState({ files: [] });
 		});
 	};
 

@@ -9,9 +9,9 @@ services:
       - "./ui:/app"
     environment:
       VIRTUAL_HOST: ${VIRTUAL_HOST}
-      API_PORT: ${API_URL}
+      API_URL: ${API_URL}
     ports:
-      - "8888:3000"
+      - "8080:3000"
     restart: always
     depends_on:
       - backend
@@ -24,13 +24,13 @@ services:
       - "uploads:/root/.castyou"
       - ".:/app"
     environment:
-      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      API_URL: ${API_URL}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_PASS: ${DATABASE_PASS}
       DATABASE_HOST: "database"
     ports:
-      - "8765:80"
+      - "80:80"
     restart: always
     depends_on:
       - database

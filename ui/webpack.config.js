@@ -39,12 +39,17 @@ const config = {
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NamedModulesPlugin(),
-		new HtmlWebpackPlugin({template: './src/index.html'})
+		new webpack.EnvironmentPlugin(['API_URL']),
+		new HtmlWebpackPlugin({template: './src/index.html'}),
 	],
 
 	resolve: {
 		extensions: ['.js', '.jsx']
 	},
+
+	devServer: {
+		disableHostCheck: true
+	}
 };
 
 module.exports = config;

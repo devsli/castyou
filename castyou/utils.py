@@ -56,8 +56,7 @@ async def config():
 
 def decorate_item(item):
     result = dict(item)
-    host = os.environ.get('VIRTUAL_HOST', 'localhost')
-    result['url'] = f"http://{host}/file/{item['filename']}"
+    result['url'] = f"{os.environ['API_URL']}/file/{item['filename']}"
     result['pub_date'] = format_datetime(result['pub_date'])
     result['guid'] = result['url']
     return result
