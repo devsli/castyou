@@ -26,7 +26,11 @@ export default class Home extends React.Component {
 	};
 
 	onDrop = (acceptedFiles) => {
-		this.setState({ files: [ ...this.state.files, ...acceptedFiles ] });
+		this.setState({ files: [ ...this.state.files, ...acceptedFiles ] }, () => {
+			if (this.state.autoUpload) {
+				this.upload()
+			}
+		});
 	};
 
 	render() {
@@ -50,24 +54,13 @@ export default class Home extends React.Component {
 					Upload
 				</a>
 
-				<form style={{display: 'none'}} action="http://localhost:8765/upload" method="post" encType="multipart/form-data">
-					<div className="field">
-						<div className="file is-primary">
-							<label className="file-label">
-								<input className="file-input" type="file" name="cast" />
-								<span className="file-cta">
-                                    <span className="file-icon">
-                                        <i className="fa fa-upload" />
-                                    </span>
-                                    <span className="file-label">
-                                        Primary file…
-                                    </span>
-                                </span>
-							</label>
-						</div>
-					</div>
-					<input type="submit" />
-				</form>
+				<label className="checkbox">
+					<input
+						value={ this.state.autoUpload }
+						onChange={ (e) => this.setState({ autoUpload: e.target.checked }) }
+						type="checkbox" />
+					Auto-upload
+				</label>
 			</div>
 		);
 	}
