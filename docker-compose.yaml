@@ -1,6 +1,21 @@
 version: "2.1"
 
 services:
+  web:
+    image: nginx
+    restart: always
+    environment:
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      API_URL: ${API_URL}
+    volumes:
+      - "./nginx:/etc/nginx/conf.d:ro"
+      - "uploads:/usr/share/nginx/podcasts:ro"
+    ports:
+      - "8888:80"
+    depends_on:
+      - ui
+      - backend
+
   ui:
     image: node:8-alpine
     working_dir: /app
@@ -10,9 +25,6 @@ services:
     environment:
       VIRTUAL_HOST: ${VIRTUAL_HOST}
       API_URL: ${API_URL}
-    ports:
-      - "8080:3000"
-    restart: always
     depends_on:
       - backend
 
@@ -24,14 +36,11 @@ services:
       - "uploads:/root/.castyou"
       - ".:/app"
     environment:
-      API_URL: ${API_URL}
+      STATIC_URL: ${STATIC_URL}
       DATABASE_USER: ${DATABASE_USER}
       DATABASE_NAME: ${DATABASE_NAME}
       DATABASE_PASS: ${DATABASE_PASS}
       DATABASE_HOST: "database"
-    ports:
-      - "80:80"
-    restart: always
     depends_on:
       - database
 
@@ -41,7 +50,6 @@ services:
       POSTGRES_USER: ${DATABASE_USER}
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_PASSWORD: ${DATABASE_PASS}
-    restart: always
     logging:
       options:
         max-size: "10m"

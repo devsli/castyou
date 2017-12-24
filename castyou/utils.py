@@ -8,7 +8,12 @@ from magic import Magic
 
 
 def get_db():
-    return asyncpg.connect('postgresql://castyou:castyou@database/castyou')
+    user = os.environ['DATABASE_USER']
+    passwd = os.environ['DATABASE_PASS']
+    host = os.environ['DATABASE_HOST']
+    name = os.environ['DATABASE_NAME']
+
+    return asyncpg.connect(f'postgresql://{user}:{passwd}@{host}/{name}')
 
 
 async def new_entry(file, uploaded_name, location):
@@ -56,7 +61,7 @@ async def config():
 
 def decorate_item(item):
     result = dict(item)
-    result['url'] = f"{os.environ['API_URL']}/file/{item['filename']}"
+    result['url'] = f"{os.environ['STATIC_URL']}/{item['filename']}"
     result['pub_date'] = format_datetime(result['pub_date'])
     result['guid'] = result['url']
     return result

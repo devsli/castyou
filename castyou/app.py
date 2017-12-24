@@ -15,9 +15,7 @@ cors = aiohttp_cors.setup(app)
 
 xhr_routes = []
 
-app.router.add_get('/', views.index)
 app.router.add_get('/rss.xml', views.rss)
-app.router.add_static('/file/', path=str(const.UPLOADS), name='static')
 
 xhr_routes.append(app.router.add_post('/upload', views.upload))
 

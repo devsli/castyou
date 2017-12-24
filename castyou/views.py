@@ -7,11 +7,6 @@ from aiohttp import web
 from . import const, utils
 
 
-@aiohttp_jinja2.template('index.html')
-async def index(_):
-    pass
-
-
 async def upload(request):
     reader = await request.multipart()
     item = await reader.next()
