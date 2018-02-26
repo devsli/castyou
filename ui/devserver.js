@@ -4,6 +4,7 @@ var config = require('./webpack.config');
 
 new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
+  disableHostCheck: true,
   hot: true,
   historyApiFallback: true
 }).listen(3000, '0.0.0.0', function (err, result) {
